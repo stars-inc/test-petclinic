@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.config;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
