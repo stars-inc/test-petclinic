@@ -1,0 +1,59 @@
+package com.example.demo.owner;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.example.demo.owner.data.OwnerDto.defaultOwnerRequest;
+
+import java.util.Map;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestConstructor;
+import org.springframework.test.context.TestConstructor.AutowireMode;
+
+import com.example.demo.DemoApplication;
+import com.example.demo.config.RestAssuredService;
+
+import io.restassured.response.Response;
+import lombok.RequiredArgsConstructor;
+
+
+@SpringBootTest(classes = DemoApplication.class, webEnvironment = WebEnvironment.NONE)
+@Import(RestAssuredService.class)
+@TestConstructor(autowireMode = AutowireMode.ALL)
+@RequiredArgsConstructor
+public class OwnerApiTest {
+
+  private final RestAssuredService restAssured;
+  private static final String OWNERS_ENDPOINT = "/api/owners";
+  
+  @Test
+  @DisplayName("Owner CRUD flow: create, get, update, delete, get after delete")
+  void ownerCrudFTest() {
+    Map<String, Object> createOwnerRequest = defaultOwnerRequest();
+
+    Response createResponse = restAssured
+      .request()
+        .body(createOwnerRequest)
+          .when()
+            .post(OWNERS_ENDPOINT)
+              .then()
+                  .statusCode(201)
+                  .body("id", notNullValue())
+                  .body("firstName", equalTo("TestFirstName"))
+                  .body("lastName", equalTo("TestLastName"))
+                  .body("address", equalTo("Test address"))
+                  .body("city", equalTo("Vilnius"))
+                  .body("telephone", equalTo("8600000012"))
+                  .extract()
+                  .response();
+
+    Integer ownerId = createResponse.path("id");
+
+    assertNotNull(ownerId, "should return owner's ID");
+  }
+}

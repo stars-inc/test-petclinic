@@ -10,14 +10,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
 
+import com.example.demo.DemoApplication;
 import com.example.demo.config.RestAssuredService;
 import lombok.RequiredArgsConstructor;
 
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@SpringBootTest(classes = DemoApplication.class, webEnvironment = WebEnvironment.NONE)
 @Import(RestAssuredService.class)
 @TestConstructor(autowireMode = AutowireMode.ALL)
 @RequiredArgsConstructor
-public class OwnerApiTests {
+public class HealthCheckApiTest {
 
   private final RestAssuredService restAssured;
   
