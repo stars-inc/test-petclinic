@@ -14,7 +14,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static com.example.demo.owner.data.OwnerDto.defaultOwnerRequest;
 import static com.example.demo.owner.data.OwnerDto.invalidOwnerRequest;
-import static io.restassured.RestAssured.given;
 
 import java.util.Map;
 
@@ -45,11 +44,11 @@ public class OwnerApiTest {
   @Test
   @DisplayName("Owner CRUD flow: create, get, update, delete, get after delete")
   void ownerCrudFTest() {
-    
+
     Map<String, Object> createOwnerRequest = defaultOwnerRequest();
 
     // Create Owner
-    Response createResponse = restAssured
+    Integer ownerId = restAssured
       .request()
         .body(createOwnerRequest)
           .when()
@@ -65,12 +64,11 @@ public class OwnerApiTest {
               .extract()
               .path("id");
 
-    Integer ownerId = createResponse.path("id");
-
     assertNotNull(ownerId, "should return owner's ID");
 
     // Get Owner by ID
-    given()
+    restAssured
+      .request()
       .pathParam("ownerId", ownerId)
       .when()
         .get(OWNERS_ENDPOINT + "/{ownerId}")
