@@ -1,9 +1,16 @@
 package com.example.demo.owner;
 
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.blankOrNullString;
+import static org.hamcrest.Matchers.containsStringIgnoringCase;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static com.example.demo.owner.data.OwnerDto.defaultOwnerRequest;
+import static com.example.demo.owner.data.OwnerDto.invalidOwnerRequest;
 
 import java.util.Map;
 
@@ -55,5 +62,33 @@ public class OwnerApiTest {
     Integer ownerId = createResponse.path("id");
 
     assertNotNull(ownerId, "should return owner's ID");
+  }
+
+  @Test
+  @DisplayName("POST /api/owners with invalid data returns validation error")
+  void invalidOwnerShouldReturnValidationError() {
+    Map<String, Object> invalidOwnerRequest = invalidOwnerRequest();
+
+    Response response = restAssured
+      .request()
+        .body(invalidOwnerRequest)
+          .when()
+            .post(OWNERS_ENDPOINT)
+              .then()
+                .statusCode(400)
+                .extract()
+                .response();
+
+    String responseBody = response.asString();
+
+    assertThat(responseBody, not(blankOrNullString()));
+
+    assertThat(
+      responseBody,
+      anyOf(
+        containsString("errors"),
+        containsStringIgnoringCase("validation")
+      )
+    );
   }
 }
