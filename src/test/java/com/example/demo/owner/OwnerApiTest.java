@@ -14,6 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static com.example.demo.owner.data.OwnerDto.defaultOwnerRequest;
 import static com.example.demo.owner.data.OwnerDto.invalidOwnerRequest;
+import static com.example.demo.owner.data.OwnerDto.updatedOwnerRequest;
 
 import java.util.Map;
 
@@ -86,6 +87,29 @@ public class OwnerApiTest {
             hasLength(greaterThanOrEqualTo(10))
           )
         );
+
+    // Update Owner by ID
+    Map<String, Object> updateOwnerRequest = updatedOwnerRequest();
+
+    restAssured
+      .request()
+      .pathParam("ownerId", ownerId)
+      .body(updateOwnerRequest)
+        .when()
+          .put(OWNERS_ENDPOINT + "/{ownerId}")
+        .then()
+          .statusCode(204);
+
+    // Get Owner after update
+    restAssured
+      .request()
+      .pathParam("ownerId", ownerId)
+        .when()
+          .get(OWNERS_ENDPOINT + "/{ownerId}")
+        .then()
+          .statusCode(200)
+          .body("id", equalTo(ownerId))
+          .body("firstName", equalTo(updateOwnerRequest.get("firstName")));
   }
 
   @Test

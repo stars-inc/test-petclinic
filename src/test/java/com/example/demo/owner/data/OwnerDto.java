@@ -33,13 +33,14 @@ public class OwnerDto {
         );
     }
 
+    // Выявлен дефект на уровне OpenAPI спецификации, expected status code 200 but response 204, no response entity
     public static Map<String, Object> updatedOwnerRequest() {
         return createOwnerRequest(
           "UpdatedFirstName",
           "UpdatedLastName",
           "Updated address",
           "Kaunas",
-          "860000002"
+          "8600000023"
         );
     }
 
