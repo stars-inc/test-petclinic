@@ -1,0 +1,16 @@
+services:
+  api-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      BASE_URL: ${BASE_URL:-http://host.docker.internal:9966/petclinic}
+
+    extra_hosts:
+      host.docker.internal: host-gateway
+
+    ports:
+      - "127.0.0.1:8080:8080"
+
+    init: true
