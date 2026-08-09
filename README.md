@@ -12,3 +12,13 @@ OpenJDK 64-Bit Server VM (build 17.0.10+7-Ubuntu-122.04.1, mixed mode, sharing)
 ```
 mvn clean test
 ```
+
+### Allure reports
+```
+mvn clean test
+mvn allure:report
+cd cd target/site/allure-maven-plugin/
+
+optionaly ->
+python3 -m http.server 8080 | <ur browser cli>
+```

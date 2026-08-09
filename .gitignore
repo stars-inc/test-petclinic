@@ -34,3 +34,4 @@ build/
 
 ### Allure ###
 .allure
+allure-report
