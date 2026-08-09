@@ -17,8 +17,11 @@ mvn clean test
 ```
 mvn clean test
 mvn allure:report
-cd cd target/site/allure-maven-plugin/
+cd target/site/allure-maven-plugin/
 
 optionaly ->
 python3 -m http.server 8080 | <ur browser cli>
 ```
+
+## docker compose
+...
