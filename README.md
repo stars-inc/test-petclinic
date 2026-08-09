@@ -24,4 +24,16 @@ python3 -m http.server 8080 | <ur browser cli>
 ```
 
 ## docker compose
-...
+to become load test in container ->
+- buld and up container with app petclinic 
+```
+docker run --rm -p 9966:9966 <ur container id exm. cb71fd4aae58>
+```
+- add grants to run script /docker/run-report.sh
+```
+chmod +x docker/run-report.sh
+```
+- run script 
+```
+./docker/run-report.sh
+```
