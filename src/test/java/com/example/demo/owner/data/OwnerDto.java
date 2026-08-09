@@ -33,7 +33,8 @@ public class OwnerDto {
         );
     }
 
-    // Выявлен дефект на уровне OpenAPI спецификации, expected status code 200 but response 204, no response entity
+    // Выявлен дефект на уровне OpenAPI спецификации, PUT expected status code 200 but response 204, no response entity
+    // Выявлен дефект на уровне OpenAPI спецификации, DELETE expected status code 200 but response 204, no response entity
     public static Map<String, Object> updatedOwnerRequest() {
         return createOwnerRequest(
           "UpdatedFirstName",

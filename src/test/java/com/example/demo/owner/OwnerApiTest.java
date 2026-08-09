@@ -110,6 +110,24 @@ public class OwnerApiTest {
           .statusCode(200)
           .body("id", equalTo(ownerId))
           .body("firstName", equalTo(updateOwnerRequest.get("firstName")));
+
+    // Delete Owner
+    restAssured
+      .request()
+      .pathParam("ownerId", ownerId)
+        .when()
+          .delete(OWNERS_ENDPOINT + "/{ownerId}")
+        .then()
+          .statusCode(204);
+    
+    // Get after delete should return 404
+    restAssured
+      .request()
+      .pathParam("ownerId", ownerId)
+        .when()
+          .get(OWNERS_ENDPOINT + "/{ownerId}")
+        .then()
+          .statusCode(404);
   }
 
   @Test
